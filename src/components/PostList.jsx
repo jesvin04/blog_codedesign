@@ -1,9 +1,8 @@
 import React, { useState } from 'react';
+import { useNavigate } from "react-router-dom";
 import { usePostStore } from '../store/postStore';
 import { Pencil, Trash2, Search, Plus } from 'lucide-react';
 import './PostList.css'; 
-import { useNavigate } from "react-router-dom";
-
 
 const stripHtml = (html) => {
     if (!html) return '';
@@ -17,54 +16,47 @@ const timeAgo = (dateString) => {
     const past = new Date(dateString);
     const diffInMinutes = Math.floor((now - past) / (1000 * 60));
 
-    if (diffInMinutes < 60) {
-        return `${diffInMinutes} minutes ago`;
-    } else if (diffInMinutes < 24 * 60) {
-        const diffInHours = Math.floor(diffInMinutes / 60);
-        return `${diffInHours} hours ago`;
-    } else {
-        return past.toLocaleDateString('en-US', { day: '2-digit', month: 'short', year: 'numeric' });
-    }
+    if (diffInMinutes < 1) return 'just now';
+    if (diffInMinutes < 60) return `${diffInMinutes} minutes ago`;
+    
+    const diffInHours = Math.floor(diffInMinutes / 60);
+    if (diffInHours < 24) return `${diffInHours} hours ago`;
+    
+    return past.toLocaleDateString('en-US', { day: '2-digit', month: 'short', year: 'numeric' });
 };
 
-// ✅ CHANGE #1: Removed the 'onSelectPost' prop from here.
 export default function PostList() {
-    const { posts, deletePost } = usePostStore();
-    // Defensive: make sure posts is an array (localStorage might contain an object by mistake)
-    const postsArray = Array.isArray(posts) ? posts : (posts ? Object.values(posts) : []);
+    // Correctly get posts and actions from the store
+    const posts = usePostStore((state) => state.posts);
+    const deletePost = usePostStore((state) => state.deletePost);
+    
     const [searchTerm, setSearchTerm] = useState('');
     const navigate = useNavigate();
 
-    const filteredPosts = (postsArray || [])
-        .filter(post => {
-            const title = (post.title || '').toString().toLowerCase();
-            const content = stripHtml(post.content || '').toLowerCase();
-            const q = searchTerm.toLowerCase();
-            return title.includes(q) || content.includes(q);
-        })
-        .sort((a, b) => {
-            const aDate = new Date(a.updatedAt || a.createdAt || 0).getTime();
-            const bDate = new Date(b.updatedAt || b.createdAt || 0).getTime();
-            return bDate - aDate;
-        });
+    // Ensure posts is always an array before filtering
+    const postsArray = Array.isArray(posts) ? posts : [];
+
+    const filteredPosts = postsArray
+        .filter(post =>
+            (post.title || '').toLowerCase().includes(searchTerm.toLowerCase()) ||
+            stripHtml(post.content || '').toLowerCase().includes(searchTerm.toLowerCase())
+        )
+        .sort((a, b) => new Date(b.updatedAt) - new Date(a.updatedAt));
 
     const PostItem = ({ post }) => {
-        const displayTime = post.publishedAt 
-            ? new Date(post.publishedAt).toLocaleDateString('en-US', { day: '2-digit', month: 'short', year: 'numeric' })
-            : timeAgo(post.updatedAt);
-            
+        const displayTime = timeAgo(post.updatedAt);
         const contentSnippet = stripHtml(post.content || '').substring(0, 100);
 
         const handleDelete = (e) => {
             e.stopPropagation(); 
-            if (window.confirm(`Are you sure you want to delete "${post.title}"?`)) {
+            if (window.confirm(`Are you sure you want to delete "${post.title || 'Untitled Post'}"?`)) {
                 deletePost(post.id);
             }
         };
 
         return (
+            // The onClick for the whole item navigates to the edit page
             <div
-                key={post.id}
                 className="post-item"
                 onClick={() => navigate(`/edit/${post.id}`)}
             >
@@ -73,16 +65,10 @@ export default function PostList() {
                         {post.title || 'Untitled Post'}
                     </h2>
                     <p className="post-excerpt">
-                        {contentSnippet || 'No content...'}...
+                        {contentSnippet ? `${contentSnippet}...` : 'No content...'}
                     </p>
                     <div className="post-meta">
-                        {post.publishedAt ? (
-                            <span className="published">
-                                Published <span className="time-value">{displayTime}</span>
-                            </span>
-                        ) : (
-                            <span className="time-value">{displayTime}</span>
-                        )}
+                         <span className="time-value">{displayTime}</span>
                     </div>
                 </div>
                 
@@ -108,12 +94,10 @@ export default function PostList() {
 
     return (
         <div className="post-list-container">
-            {/* Header */}
             <div className="post-list-header">
                 <h1 className="post-list-title">Posts</h1>
             </div>
 
-            {/* Search Input + New Post Button */}
             <div className="search-and-actions">
                 <div className="search-container">
                     <Search size={20} className="search-icon" />
@@ -126,7 +110,7 @@ export default function PostList() {
                     />
                 </div>
                  <button
-                    onClick={() => navigate("/new")} // This was already correct
+                    onClick={() => navigate("/new")}
                     className="new-post-btn"
                 >
                     <Plus size={18} style={{ marginRight: '0.25rem' }} />
@@ -134,10 +118,11 @@ export default function PostList() {
                 </button>
             </div>
 
-            {/* Post List */}
             <div className="post-list-items">
                 {filteredPosts.length > 0 ? (
-                    filteredPosts.map((post) => <PostItem key={post.id ?? Math.random()} post={post} />)
+                    // ✅ CRITICAL FIX: Use the stable `post.id` for the key.
+                    // Never use Math.random() for keys.
+                    filteredPosts.map((post) => <PostItem key={post.id} post={post} />)
                 ) : (
                     <div className="empty-state">
                         {searchTerm 
