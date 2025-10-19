@@ -1,0 +1,239 @@
+/* Existing styles from before... */
+.editor-page-container {
+    background-color: #f0f2f5;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+.editor-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0.75rem 2rem;
+    background-color: #fff;
+    border-bottom: 1px solid #ddd;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+}
+.header-left {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+.back-button {
+    background: none;
+    border: none;
+    color: #333;
+    font-weight: 500;
+    cursor: pointer;
+    font-size: 0.95rem;
+    padding: 0;
+}
+.save-status {
+    font-size: 0.85rem;
+    color: #666;
+}
+.header-right {
+    display: flex;
+    gap: 0.75rem;
+}
+.preview-button {
+    background: none;
+    color: #333;
+    border: 1px solid #333;
+    padding: 0.5rem 1rem;
+    border-radius: 4px;
+    cursor: pointer;
+    font-weight: 500;
+    transition: all 0.2s;
+}
+.publish-button {
+    background: #00b050;
+    color: #fff;
+    border: none;
+    padding: 0.5rem 1rem;
+    border-radius: 4px;
+    cursor: pointer;
+    font-weight: bold;
+    transition: background-color 0.2s;
+}
+.publish-button:hover {
+    background: #009940;
+}
+.editor-content-area {
+    max-width: 900px; 
+    width: 100%;
+    margin: 2rem auto;
+    padding: 0 1rem; 
+}
+.cover-image-section {
+    margin-bottom: 2.5rem;
+}
+.upload-cover-area {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    min-height: 250px;
+    border: 2px dashed #e0e0e0;
+    border-radius: 6px;
+    color: #999;
+    font-size: 0.9rem;
+    cursor: pointer;
+    background-color: #fff;
+    text-align: center;
+    padding: 2rem;
+}
+.upload-icon {
+    font-size: 1.5rem;
+    margin-bottom: 0.5rem;
+}
+.upload-specs {
+    font-size: 0.7rem;
+    margin-top: 0.5rem;
+    color: #bbb;
+}
+.post-cover-image {
+    width: 100%;
+    max-height: 400px;
+    object-fit: cover;
+    border-radius: 6px;
+}
+.writing-body-wrapper {
+    background-color: #fff;
+    padding: 2rem;
+    border-radius: 6px;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+}
+.post-title-input {
+    width: 100%;
+    border: none;
+    font-size: 3rem;
+    font-weight: 700;
+    margin-bottom: 1.5rem;
+    padding: 0;
+    outline: none;
+    background: transparent;
+    color: #333;
+    border-bottom: 1px solid #ccc;
+    padding-bottom: 0.5rem;
+}
+.post-title-input::placeholder {
+    color: #ccc;
+}
+/* textarea has been removed */
+
+
+/* --- NEW TIPTAP EDITOR STYLES --- */
+
+/* This targets the actual editable area of Tiptap */
+.ProseMirror {
+    min-height: 400px;
+    outline: none;
+    font-size: 1.125rem;
+    line-height: 1.6;
+    color: #333;
+}
+
+/* Style for the placeholder text */
+.ProseMirror p.is-editor-empty:first-child::before {
+  content: attr(data-placeholder);
+  float: left;
+  color: #adb5bd;
+  pointer-events: none;
+  height: 0;
+}
+
+/* --- NEW BUBBLE MENU STYLES --- */
+.bubble-menu {
+    display: flex;
+    background-color: #fff; /* changed to white */
+    padding: 0.2rem;
+    border-radius: 6px;
+    color: #333; /* dark text on white bg */
+    box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+    overflow: hidden;
+}
+
+.bubble-menu button {
+  border: none;
+    background: none;
+    color: #333;
+  font-size: 0.85rem;
+  font-weight: 500;
+  padding: 0.4rem 0.8rem;
+  cursor: pointer;
+}
+
+.bubble-menu button:hover {
+    background-color: #f2f4f6;
+}
+
+.bubble-menu button.is-active {
+  background-color: #007bff;
+  color: white;
+}
+
+
+/* This holds the link input and the "Latest Posts" section */
+.bubble-menu-link-editor {
+  display: flex;
+  flex-direction: column;
+  padding: 8px;
+  width: 300px; /* Or whatever width fits your design */
+}
+
+/* Styles for the input box */
+.bubble-menu-link-input {
+  width: 100%;
+  padding: 8px 12px;
+  border-radius: 6px;
+  border: 1px solid #ddd;
+  background-color: #fff;
+  font-size: 14px;
+  box-sizing: border-box; /* Important for padding to work correctly */
+}
+
+/* This creates the green border from your screenshot */
+.bubble-menu-link-input:focus {
+  outline: none;
+  border-color: #2ecc71; /* Green border on focus */
+  box-shadow: 0 0 0 2px rgba(46, 204, 113, 0.2); /* Optional: adds a soft glow */
+}
+
+/* Container for the "LATEST POSTS" section */
+.bubble-menu-link-posts {
+  margin-top: 12px;
+}
+
+/* The "LATEST POSTS" text */
+.bubble-menu-link-label {
+  font-size: 11px;
+  font-weight: 600;
+  color: #999;
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+  display: block;
+  margin-bottom: 6px;
+  padding-left: 4px;
+}
+
+/* The "Coming soon" item */
+.bubble-menu-link-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 8px;
+  border-radius: 6px;
+  background-color: #f9f9f9;
+  font-size: 14px;
+  color: #333;
+}
+
+/* The date on the right */
+.bubble-menu-link-item span:last-child {
+  font-size: 12px;
+  color: #999;
+}

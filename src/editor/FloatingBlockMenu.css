@@ -1,0 +1,500 @@
+/* ====================================
+   FLOATING BLOCK MENU ITSELF
+   ==================================== */
+
+/* Styling for the floating menu wrapper */
+.floating-menu-container {
+  /* Remove all default styling */
+  background: none;
+  border: none;
+  box-shadow: none;
+  padding: 0;
+}
+
+/* This is our new layout div */
+.floating-menu-layout {
+  display: flex;
+  align-items: flex-start; /* Aligns '+' with top of menu */
+  gap: 8px; /* Space between '+' and the menu */
+}
+
+/* This is the '+' trigger button */
+.floating-menu-plus-button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  border: 1px solid #ddd;
+  background: #fff;
+  color: #555;
+  font-size: 20px;
+  line-height: 1;
+  cursor: pointer;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+  transition: all 0.2s ease;
+}
+
+.floating-menu-plus-button:hover {
+  border-color: #ccc;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  transform: scale(1.05);
+}
+
+/* This is the white box with all the options */
+.floating-menu-options {
+  display: flex;
+  flex-direction: column;
+  background: #fff;
+  border-radius: 8px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1), 0 0 0 1px rgba(0, 0, 0, 0.05);
+  padding: 8px;
+  width: 240px;
+  overflow: hidden;
+}
+
+/* Hidden state: keep in DOM but visually collapse */
+.floating-menu-options.is-closed {
+  max-height: 0;
+  width: 0;
+  padding: 0;
+  opacity: 0;
+  pointer-events: none;
+  transition: all 160ms ease;
+}
+
+.floating-menu-options.is-open {
+  max-height: 400px;
+  width: 240px;
+  padding: 8px;
+  opacity: 1;
+  pointer-events: auto;
+  transition: all 160ms ease;
+}
+
+/* Container for all the options */
+.floating-menu-options .floating-menu-options-list {
+  padding: 8px;
+  max-height: 300px;
+  overflow-y: auto;
+}
+
+/* This is the button for each item (Photo, YouTube, etc) */
+.floating-menu-button {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  width: 100%;
+  border: none;
+  background: none;
+  padding: 10px 12px;
+  border-radius: 6px;
+  font-size: 15px;
+  text-align: left;
+  cursor: pointer;
+  color: #333;
+  transition: background-color 0.2s ease;
+}
+
+.floating-menu-button:hover {
+  background-color: #f5f5f5;
+}
+
+.floating-menu-button svg {
+  width: 20px;
+  height: 20px;
+  color: #666;
+  flex-shrink: 0;
+}
+
+/* ====================================
+   STYLES FOR CUSTOM NODES INSERTED
+   ==================================== */
+
+/* Divider (hr) styling */
+hr {
+  border: none;
+  border-top: 2px dotted #ccc;
+  margin: 2em 0;
+  width: 100%;
+}
+
+/* ====================================
+   STYLES FOR HTML EMBED NODE
+   ==================================== */
+
+/* Wrapper for the entire node view */
+.html-embed-node-wrapper {
+  margin: 1.5em 0;
+  border-radius: 8px;
+  border: 2px solid transparent; /* For selected state */
+  position: relative;
+}
+
+/* Selected state */
+.html-embed-node-wrapper.is-selected {
+  border-color: #2ecc71; /* Green border when selected */
+  box-shadow: 0 0 0 2px rgba(46, 204, 113, 0.2);
+}
+
+/* Placeholder for empty embed */
+.html-embed-placeholder {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 2.5em;
+  background: #f9f9f9;
+  border: 2px dashed #ddd;
+  border-radius: 6px;
+  color: #888;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+.html-embed-placeholder:hover {
+  background: #f1f1f1;
+}
+.html-embed-placeholder svg {
+  width: 28px;
+  height: 28px;
+}
+.html-embed-placeholder span {
+  font-size: 0.9em;
+  font-weight: 500;
+}
+
+/* Editing state (textarea) */
+.html-embed-editor {
+  padding: 16px;
+  background: #fdfdfd;
+  border: 1px solid #ddd;
+  border-radius: 6px;
+}
+.html-embed-editor span {
+  font-weight: 600;
+  font-size: 0.9em;
+  color: #555;
+  margin-left: 8px;
+}
+.html-embed-editor textarea {
+  width: 100%;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  padding: 12px;
+  margin-top: 12px;
+  font-family: 'Fira Code', 'Monaco', monospace;
+  font-size: 0.9em;
+  resize: vertical;
+  box-sizing: border-box; /* Important */
+}
+.html-embed-editor textarea:focus {
+  outline: none;
+  border-color: #2ecc71;
+  box-shadow: 0 0 0 2px rgba(46, 204, 113, 0.2);
+}
+.html-embed-icon {
+  color: #888;
+  vertical-align: middle;
+}
+
+/* Rendering state (iframe) */
+.html-embed-render-container {
+  position: relative;
+  border: 1px solid #eee;
+  border-radius: 6px;
+  overflow: hidden; /* To keep iframe rounded */
+  cursor: pointer;
+}
+.html-embed-render-container iframe {
+  display: block; /* Remove bottom space */
+  background: #fff;
+  min-height: 150px; /* Default min height */
+  width: 100%;
+}
+
+/* Overlay to re-enable editing */
+.html-embed-click-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.1);
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 600;
+  font-size: 0.9em;
+  text-shadow: 0 1px 2px rgba(0,0,0,0.3);
+  opacity: 0;
+  transition: opacity 0.2s ease;
+  z-index: 10;
+  border-radius: 6px; /* Match container */
+}
+.html-embed-render-container:hover .html-embed-click-overlay,
+.html-embed-node-wrapper.is-selected .html-embed-click-overlay {
+  opacity: 1;
+}
+
+
+/* ====================================
+   STYLES FOR YOUTUBE EMBED NODE
+   ==================================== */
+
+/* --- STATE 1: Input Placeholder --- */
+.youtube-embed-placeholder-wrapper {
+  margin: 1.5em 0;
+}
+
+.youtube-embed-placeholder {
+  width: 100%;
+  border-radius: 6px;
+  background: #fafafa;
+  border: 1px solid #eee;
+}
+
+.youtube-embed-placeholder input {
+  width: 100%;
+  padding: 16px;
+  border: 2px solid transparent;
+  border-radius: 6px;
+  background: transparent;
+  font-size: 16px;
+  color: #555;
+  box-sizing: border-box; /* Important */
+}
+
+.youtube-embed-placeholder input::placeholder {
+  color: #aaa;
+}
+
+.youtube-embed-placeholder input:focus {
+  outline: none;
+  border-color: #2ecc71; /* Green border on focus */
+  box-shadow: 0 0 0 2px rgba(46, 204, 113, 0.2);
+}
+
+/* --- STATE 2: Rendered Video --- */
+.youtube-embed-rendered-wrapper {
+  margin: 1.5em 0;
+  border: 2px solid transparent;
+  border-radius: 8px; /* Rounded corners for the whole block */
+}
+
+/* Add green border when the node is selected */
+.youtube-embed-rendered-wrapper.is-selected {
+  border-color: #2ecc71;
+  box-shadow: 0 0 0 2px rgba(46, 204, 113, 0.2);
+}
+
+/* This container makes the video responsive */
+.youtube-video-wrapper {
+  position: relative;
+  width: 100%;
+  height: 0;
+  padding-bottom: 56.25%; /* 16:9 Aspect Ratio */
+  background: #000;
+  border-radius: 6px; /* Rounded corners for the video */
+  overflow: hidden; /* Clips the iframe */
+}
+
+.youtube-video-wrapper iframe {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  border: none;
+}
+/* ... (Keep all your existing styles) ... */
+
+/* --- YouTube Input Placeholder (Error State) --- */
+.youtube-embed-placeholder-wrapper.is-error .youtube-embed-placeholder {
+  border-color: #e74c3c; /* Red border */
+  background: #fff6f6;
+  color: #c0392b; /* Red text */
+  padding: 16px;
+  text-align: center;
+  font-size: 14px;
+  font-weight: 500;
+}
+/* Caption placeholder styling */
+.embed-caption {
+  width: 100%;
+  padding: 10px 4px;
+  font-size: 14px;
+  color: #aaa;
+  text-align: center;
+  box-sizing: border-box;
+}
+
+.embed-caption:focus {
+  outline: none;
+}
+
+
+/* ====================================
+   STYLES FOR BOOKMARK NODE
+   ==================================== */
+
+/* --- STATE 1: Input Placeholder --- */
+.bookmark-placeholder-wrapper {
+  margin: 1.5em 0;
+}
+
+.bookmark-placeholder {
+  width: 100%;
+  border-radius: 6px;
+  background: #fafafa;
+  border: 1px solid #eee;
+}
+
+.bookmark-placeholder input {
+  width: 100%;
+  padding: 16px;
+  border: 2px solid transparent;
+  border-radius: 6px;
+  background: transparent;
+  font-size: 16px;
+  color: #555;
+  box-sizing: border-box; 
+}
+
+.bookmark-placeholder input::placeholder {
+  color: #aaa;
+}
+
+.bookmark-placeholder input:focus {
+  outline: none;
+  border-color: #2ecc71; /* Green border on focus */
+  box-shadow: 0 0 0 2px rgba(46, 204, 113, 0.2);
+}
+
+/* --- STATE 2: Loading Placeholder --- */
+.bookmark-loading-wrapper {
+  margin: 1.5em 0;
+}
+.bookmark-loading {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 2em;
+  background: #f9f9f9;
+  border: 1px solid #eee;
+  border-radius: 6px;
+  color: #888;
+  font-size: 0.9em;
+}
+.bookmark-loading strong {
+  color: #555;
+  margin-left: 0.5em;
+  word-break: break-all;
+}
+
+/* --- STATE 3: Rendered Card Wrapper --- */
+.bookmark-card-wrapper {
+  margin: 1.5em 0;
+  border: 2px solid transparent;
+  border-radius: 10px; /* Outer radius for selection */
+  transition: border-color 0.2s ease;
+}
+/* Add green border when the node is selected */
+.bookmark-card-wrapper.is-selected {
+  border-color: #2ecc71;
+  box-shadow: 0 0 0 2px rgba(46, 204, 113, 0.2);
+}
+
+/* Bookmark Card Styling */
+.bookmark-card {
+  display: flex;
+  text-decoration: none;
+  border: 1px solid #e0e0e0;
+  border-radius: 8px;
+  overflow: hidden;
+  background: #fff;
+  color: #333;
+  transition: box-shadow 0.2s ease, transform 0.2s ease;
+  min-height: 120px; /* Minimum height for consistency */
+}
+
+.bookmark-card:hover {
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  transform: translateY(-2px);
+}
+
+.bookmark-content {
+  flex-grow: 1;
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.bookmark-title {
+  font-weight: 600;
+  font-size: 1.1em;
+  margin-bottom: 4px;
+  display: -webkit-box;
+  -webkit-line-clamp: 2; /* Limit to 2 lines */
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.bookmark-description {
+  font-size: 0.9em;
+  color: #666;
+  margin-bottom: 8px;
+  display: -webkit-box;
+  -webkit-line-clamp: 3; /* Limit to 3 lines */
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.bookmark-url {
+  font-size: 0.8em;
+  color: #888;
+  word-break: break-all;
+}
+
+.bookmark-image {
+  width: 120px; /* Fixed width for the image */
+  min-width: 120px;
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  flex-shrink: 0;
+}
+
+/* Responsive adjustments for smaller screens */
+@media (max-width: 600px) {
+  .bookmark-card {
+    flex-direction: column;
+  }
+  .bookmark-image {
+    width: 100%;
+    height: 120px;
+    min-height: 80px;
+    order: -1; /* Place image on top */
+  }
+  .bookmark-content {
+    padding: 12px;
+  }
+}
+
+
+/* ====================================
+   STYLES FOR OTHER EMBEDS (e.g., Twitter)
+   ==================================== */
+
+/* Twitter Embed Styling */
+.twitter-embed-wrapper {
+  margin: 1em 0;
+  background: #e6f7ff; /* Light blue background for Twitter placeholder */
+  border: 1px solid #b3e0ff;
+  padding: 1em;
+  text-align: center;
+  border-radius: 8px;
+}

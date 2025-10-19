@@ -1,0 +1,164 @@
+.post-list-container {
+    max-width: 1024px;
+    margin: 0 auto;
+    padding: 1.5rem;
+    background-color: #ffffff;
+    min-height: 100vh;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+}
+
+/* Header (Only holds the "Posts" title now) */
+.post-list-header {
+    margin-bottom: 1rem; /* Reduced margin to bring the search line closer */
+}
+
+.post-list-title {
+    font-size: 20px;/* Adjusted for better hierarchy */
+    font-weight: 700;
+    color: #1f2937; /* gray-800 */
+    text-align: left;
+}
+
+/* New: Container for Search Input and New Post Button */
+.search-and-actions {
+    display: flex;
+    gap: 1rem; /* Spacing between search bar and button */
+    align-items: center;
+    margin-bottom: 2rem;
+}
+
+/* Button style remains mostly the same, ensuring it doesn't take full width */
+.new-post-btn {
+    /* Existing button styles */
+    display: flex;
+    align-items: center;
+    background-color: #000000;
+    color: #ffffff;
+    padding: 0.5rem 1rem;
+    border-radius: 0.5rem;
+    font-size: 0.875rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.2s ease-in-out;
+    /* Flex property to ensure it takes only required space */
+    flex-shrink: 0; 
+}
+
+.new-post-btn:hover {
+    background-color: #1a1a1a;
+}
+
+/* Search Input */
+.search-and-actions {
+    display: flex;
+    justify-content: space-between; /* <-- makes search left, button right */
+    align-items: center;
+    margin-bottom: 2rem;
+}
+
+.search-container {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  flex-grow: 1;
+}
+
+.search-input {
+  width: 419px;
+  padding: 0.75rem 1rem;
+    border: 1px solid #d1d5db; /* gray-300 */
+    border-radius: 0.5rem;
+    outline: none;
+    background-color: #ffffff;
+}
+
+.search-input:focus {
+  border-color: #3b82f6; /* blue-500 */
+  box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.3);
+}
+
+.search-icon {
+  color: #9ca3af; /* gray-400 */
+  flex-shrink: 0;
+}
+
+/* Post Item */
+.post-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem;
+  border-bottom: 1px solid #e5e7eb; /* gray-200 */
+  cursor: pointer;
+  transition: background-color 0.15s ease-in-out;
+}
+
+.post-item:hover {
+  background-color: #f9fafb; /* gray-50 */
+}
+
+.post-content {
+  flex: 1;
+  min-width: 0;
+  padding-right: 1rem;
+}
+
+.post-title {
+  font-size: 1.125rem;
+  font-weight: 600;
+  color: #1f2937; /* gray-800 */
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.post-excerpt {
+  font-size: 0.875rem;
+  color: #6b7280; /* gray-500 */
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.post-meta {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  font-size: 0.75rem;
+  margin-top: 0.25rem;
+  color: #6b7280; /* gray-500 */
+}
+
+.post-meta .published {
+  font-weight: 600;
+  color: #dc2626; /* red-600 */
+}
+
+.post-actions button {
+  color: #6b7280; /* gray-500 */
+  padding: 0.5rem;
+  border-radius: 9999px;
+  cursor: pointer;
+  transition: all 0.2s ease-in-out;
+  background: none;
+  border: none;
+}
+
+.post-actions button:hover {
+  background-color: #e5e7eb; /* gray-200 */
+}
+
+.post-actions .edit-btn:hover {
+  color: #2563eb; /* blue-600 */
+}
+
+.post-actions .delete-btn:hover {
+  color: #dc2626; /* red-600 */
+}
+
+/* Empty state */
+.empty-state {
+  text-align: center;
+  padding: 2.5rem 0;
+  color: #6b7280; /* gray-500 */
+}
