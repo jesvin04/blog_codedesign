@@ -503,3 +503,66 @@ hr {
   text-align: center;
   border-radius: 8px;
 }
+
+
+
+.image-upload-placeholder-wrapper {
+  margin: 1.5em 0;
+}
+
+.image-upload-placeholder {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 16px;
+  padding: 3em 1em;
+  border: 2px dashed #ddd;
+  border-radius: 8px;
+  color: #aaa;
+  cursor: pointer;
+  background-color: #fafafa;
+  transition: all 0.2s ease;
+}
+
+.image-upload-placeholder:hover {
+  border-color: #2ecc71; /* Green border on hover */
+  color: #888;
+  background-color: #f5f5f5;
+}
+
+.image-upload-placeholder span {
+  font-size: 1.1em;
+  font-weight: 500;
+}
+
+
+/* --- STATE 2: Rendered Image --- */
+.image-upload-rendered-wrapper {
+  margin: 1.5em 0;
+  border: 2px solid transparent;
+  border-radius: 8px;
+}
+
+.image-upload-rendered-wrapper.is-selected {
+  border-color: #2ecc71; /* Green border when selected */
+  box-shadow: 0 0 0 3px rgba(46, 204, 113, 0.2);
+}
+
+.image-upload-rendered-wrapper img {
+  max-width: 100%;
+  height: auto;
+  display: block; /* Removes bottom space */
+  border-radius: 6px; /* Slightly smaller radius than the wrapper */
+}
+
+/* We can re-use the caption style from the YouTube embed */
+/* If you don't have this class, add it */
+.embed-caption {
+  width: 100%;
+  padding: 10px 4px;
+  font-size: 14px;
+  color: #aaa;
+  text-align: center;
+  box-sizing: border-box;
+}
