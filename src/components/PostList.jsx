@@ -27,17 +27,26 @@ const timeAgo = (dateString) => {
     }
 };
 
-export default function PostList({ onSelectPost, onNewPost }) {
+// ✅ CHANGE #1: Removed the 'onSelectPost' prop from here.
+export default function PostList() {
     const { posts, deletePost } = usePostStore();
+    // Defensive: make sure posts is an array (localStorage might contain an object by mistake)
+    const postsArray = Array.isArray(posts) ? posts : (posts ? Object.values(posts) : []);
     const [searchTerm, setSearchTerm] = useState('');
     const navigate = useNavigate();
 
-    const filteredPosts = posts
-        .filter(post =>
-            post.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
-            stripHtml(post.content).toLowerCase().includes(searchTerm.toLowerCase())
-        )
-        .sort((a, b) => new Date(b.updatedAt) - new Date(a.updatedAt));
+    const filteredPosts = (postsArray || [])
+        .filter(post => {
+            const title = (post.title || '').toString().toLowerCase();
+            const content = stripHtml(post.content || '').toLowerCase();
+            const q = searchTerm.toLowerCase();
+            return title.includes(q) || content.includes(q);
+        })
+        .sort((a, b) => {
+            const aDate = new Date(a.updatedAt || a.createdAt || 0).getTime();
+            const bDate = new Date(b.updatedAt || b.createdAt || 0).getTime();
+            return bDate - aDate;
+        });
 
     const PostItem = ({ post }) => {
         const displayTime = post.publishedAt 
@@ -57,7 +66,7 @@ export default function PostList({ onSelectPost, onNewPost }) {
             <div
                 key={post.id}
                 className="post-item"
-                onClick={() => onSelectPost(post)}
+                onClick={() => navigate(`/edit/${post.id}`)}
             >
                 <div className="post-content">
                     <h2 className="post-title">
@@ -79,7 +88,7 @@ export default function PostList({ onSelectPost, onNewPost }) {
                 
                 <div className="post-actions">
                     <button
-                        onClick={(e) => { e.stopPropagation(); onSelectPost(post); }}
+                        onClick={(e) => { e.stopPropagation(); navigate(`/edit/${post.id}`); }}
                         className="edit-btn"
                         title="Edit Post"
                     >
@@ -104,7 +113,7 @@ export default function PostList({ onSelectPost, onNewPost }) {
                 <h1 className="post-list-title">Posts</h1>
             </div>
 
-            {/* ✅ Added: Search Input + New Post Button */}
+            {/* Search Input + New Post Button */}
             <div className="search-and-actions">
                 <div className="search-container">
                     <Search size={20} className="search-icon" />
@@ -117,18 +126,18 @@ export default function PostList({ onSelectPost, onNewPost }) {
                     />
                 </div>
                  <button
-          onClick={() => navigate("/new")} // Navigate to /new route
-          className="new-post-btn"
-        >
-          <Plus size={18} style={{ marginRight: '0.25rem' }} />
-          New post
-        </button>
+                    onClick={() => navigate("/new")} // This was already correct
+                    className="new-post-btn"
+                >
+                    <Plus size={18} style={{ marginRight: '0.25rem' }} />
+                    New post
+                </button>
             </div>
 
             {/* Post List */}
             <div className="post-list-items">
                 {filteredPosts.length > 0 ? (
-                    filteredPosts.map((post) => <PostItem key={post.id} post={post} />)
+                    filteredPosts.map((post) => <PostItem key={post.id ?? Math.random()} post={post} />)
                 ) : (
                     <div className="empty-state">
                         {searchTerm 
@@ -141,3 +150,4 @@ export default function PostList({ onSelectPost, onNewPost }) {
         </div>
     );
 }
+

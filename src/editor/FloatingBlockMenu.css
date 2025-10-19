@@ -187,7 +187,9 @@ hr {
   font-family: 'Fira Code', 'Monaco', monospace;
   font-size: 0.9em;
   resize: vertical;
-  box-sizing: border-box; /* Important */
+  box-sizing: border-box; 
+  background-color: #fff;
+  color: #333;
 }
 .html-embed-editor textarea:focus {
   outline: none;
@@ -234,6 +236,9 @@ hr {
   z-index: 10;
   border-radius: 6px; /* Match container */
 }
+/* In src/editor/FloatingBlockMenu.css */
+
+
 .html-embed-render-container:hover .html-embed-click-overlay,
 .html-embed-node-wrapper.is-selected .html-embed-click-overlay {
   opacity: 1;

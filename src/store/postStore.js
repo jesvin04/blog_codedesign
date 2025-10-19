@@ -27,13 +27,11 @@ export const usePostStore = create((set) => ({
 
     let updatedPosts;
     if (existingIndex > -1) {
-      // Update existing post
+      // Update existing post (This logic is correct)
       updatedPosts = state.posts.map((p, index) =>
         index === existingIndex ? (() => {
-          // Maintain a snapshots array of recent contents for undo/redo across sessions
           const previousSnapshots = p.snapshots || [];
           const newContent = post.content || p.content || '';
-          // If content changed, push previous content onto snapshots
           const snapshots = (newContent !== p.content)
             ? [p.content || '', ...previousSnapshots].slice(0, 50)
             : previousSnapshots;
@@ -41,15 +39,20 @@ export const usePostStore = create((set) => ({
         })() : p
       );
     } else {
-      // Create new post
+      // --- Create new post ---
       const newPost = { 
+        // ✅ THE FIX IS HERE:
+        // Spread the incoming post data first...
+        ...post, 
+        
+        // ...then set (or override) the properties.
+        // This ensures our new ID is not overwritten by `post.id` (which is null).
         id: Date.now(), 
         title: post.title || "Untitled Post", 
         content: post.content || "", 
         snapshots: post.content ? [post.content] : [],
         updatedAt: now, 
         createdAt: now, 
-        ...post 
       };
       updatedPosts = [newPost, ...state.posts]; // Newest post at the top
     }
@@ -65,3 +68,4 @@ export const usePostStore = create((set) => ({
     return { posts: updatedPosts };
   }),
 }));
+
